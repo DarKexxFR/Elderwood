@@ -20,7 +20,7 @@ Fiche de révision non officielle du serveur RP **Elderwood** : lore, société 
 
 ## Les flashcards
 
-88 cartes réparties en 8 thèmes (magie, maisons, lieux, société, figures, chronologie, créatures, règles), ou toutes mélangées.
+150 cartes réparties en 8 thèmes (magie, maisons, lieux, société, figures, chronologie, créatures, règles), ou toutes mélangées.
 
 - Tirage aléatoire, clic pour retourner la carte
 - Marquage « je savais » / « à revoir », score en fin de deck
@@ -30,7 +30,7 @@ Fiche de révision non officielle du serveur RP **Elderwood** : lore, société 
 ## Fichiers
 
 - `index.html` — la fiche interactive, page unique, sans dépendance
-- `flashcards.html` — les 88 flashcards, page unique, sans dépendance
+- `flashcards.html` — les 150 flashcards, page unique, sans dépendance
 - `elderwood-fiche.pdf` — la fiche en PDF A4, 10 pages, imprimable
 
 ## Mettre en ligne
