@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elderwood — Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0e1620; --ink-2:#141f2c; --ink-3:#1b2836; --line:#2a3a4c;
+  --text:#dfe6ee; --text-dim:#93a3b5; --gold:#c8a459;
+  --bleu:#5b8fd6; --vert:#5fa87a; --orange:#d68a45; --violet:#9b7bc4; --rouge:#c96a6a;
+  --radius:3px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --ink:#f2eee6; --ink-2:#e9e3d8; --ink-3:#e2dace; --line:#cabfae;
+    --text:#221d17; --text-dim:#6b6154; --gold:#8a6a1f;
+    --bleu:#2f5f9e; --vert:#2f7a4e; --orange:#a45a12; --violet:#6b4a94; --rouge:#a03c3c;
+  }
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:'Karla',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+a{color:inherit}
+
+/* header */
+.top{
+  border-bottom:1px solid var(--line);padding:18px 20px 16px;text-align:center;
+  background:radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 60%), var(--ink);
+}
+.top h1{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;
+  font-size:clamp(28px,6vw,44px);margin:0;line-height:1;
+}
+.top .sub{font-size:13px;color:var(--text-dim);margin:6px 0 0}
+.top .back{font-size:12.5px;color:var(--text-dim);text-decoration:none;border-bottom:1px solid var(--line)}
+.top .back:hover{color:var(--gold)}
+
+/* deck picker */
+.decks{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+  padding:12px 16px;border-bottom:1px solid var(--line);background:var(--ink-2);
+}
+.deck{
+  font:inherit;font-size:12.5px;cursor:pointer;
+  background:var(--ink);color:var(--text-dim);
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:5px 11px;
+}
+.deck:hover{color:var(--text)}
+.deck[aria-pressed="true"]{
+  color:var(--ink);background:var(--gold);border-color:var(--gold);font-weight:700;
+}
+.deck .n{opacity:.7;font-weight:400}
+
+/* stage */
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px 16px 10px;gap:16px}
+.meter{width:min(640px,100%);display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--text-dim)}
+.bar{flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .25s}
+
+.card{
+  width:min(640px,100%);min-height:min(330px,52vh);
+  perspective:1400px;cursor:pointer;background:none;border:0;padding:0;font:inherit;color:inherit;
+  display:block;
+}
+.inner{
+  position:relative;width:100%;height:100%;min-height:inherit;
+  transition:transform .5s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d;
+}
+.card.flipped .inner{transform:rotateY(180deg)}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border:1px solid var(--line);border-top:3px solid var(--c,var(--gold));
+  border-radius:var(--radius);background:var(--ink-2);
+  padding:clamp(22px,4vw,38px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;
+  overflow:auto;
+}
+.face .tag{
+  position:absolute;top:12px;left:0;right:0;text-align:center;
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--c,var(--gold));
+}
+.face .hint{
+  position:absolute;bottom:12px;left:0;right:0;text-align:center;
+  font-size:11.5px;color:var(--text-dim);
+}
+.front .q{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;
+  font-size:clamp(23px,4.4vw,34px);line-height:1.2;margin:0;
+}
+.back{transform:rotateY(180deg)}
+.back .a{font-size:clamp(15px,2.4vw,17.5px);margin:0;max-width:52ch}
+.back .a b{color:var(--c,var(--gold))}
+
+/* controls */
+.controls{width:min(640px,100%);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding-bottom:26px}
+button.act{
+  font:inherit;font-size:13.5px;cursor:pointer;
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--ink-2);color:var(--text);padding:9px 16px;
+}
+button.act:hover{border-color:var(--gold)}
+button.act.ko{color:var(--rouge);border-color:color-mix(in srgb,var(--rouge) 45%,var(--line))}
+button.act.ok{color:var(--vert);border-color:color-mix(in srgb,var(--vert) 45%,var(--line))}
+button.act.ko:hover{background:color-mix(in srgb,var(--rouge) 14%,var(--ink-2))}
+button.act.ok:hover{background:color-mix(in srgb,var(--vert) 14%,var(--ink-2))}
+button.act.ghost{background:none;color:var(--text-dim)}
+
+/* end screen */
+.done{
+  width:min(640px,100%);border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--ink-2);padding:34px 28px;text-align:center;
+}
+.done h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:34px;margin:0 0 6px}
+.done .score{font-size:14px;color:var(--text-dim);margin:0 0 20px}
+.done .score b{color:var(--gold);font-size:17px}
+.hidden{display:none!important}
+footer{border-top:1px solid var(--line);padding:16px;text-align:center;font-size:12px;color:var(--text-dim)}
+kbd{
+  font-family:inherit;font-size:11px;border:1px solid var(--line);border-bottom-width:2px;
+  border-radius:3px;padding:1px 5px;color:var(--text-dim);background:var(--ink-3);
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Flashcards</h1>
+  <p class="sub">Révision Elderwood — <a class="back" href="index.html">retour à la fiche</a></p>
+</header>
+
+<nav class="decks" id="decks" aria-label="Choisir un thème"></nav>
+
+<main>
+  <div class="meter">
+    <span id="pos">1 / 1</span>
+    <span class="bar"><i id="fill"></i></span>
+    <span id="tally">0 ✓</span>
+  </div>
+
+  <button class="card" id="card" aria-live="polite">
+    <div class="inner">
+      <div class="face front">
+        <span class="tag" id="tagF"></span>
+        <p class="q" id="q"></p>
+        <span class="hint">Clique ou <kbd>Espace</kbd> pour retourner</span>
+      </div>
+      <div class="face back">
+        <span class="tag" id="tagB"></span>
+        <p class="a" id="a"></p>
+        <span class="hint">Clique pour revenir</span>
+      </div>
+    </div>
+  </button>
+
+  <div class="done hidden" id="done">
+    <h2>Deck terminé</h2>
+    <p class="score" id="finalScore"></p>
+    <div class="controls" style="padding:0">
+      <button class="act ok" id="again">Tout recommencer</button>
+      <button class="act ko hidden" id="redo">Revoir les ratées</button>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <button class="act ghost" id="prev">← Précédente</button>
+    <button class="act ko" id="ko">À revoir</button>
+    <button class="act ok" id="ok">Je savais</button>
+    <button class="act ghost" id="shuffle">Mélanger</button>
+  </div>
+</main>
+
+<footer>
+  <kbd>Espace</kbd> retourner · <kbd>←</kbd> <kbd>→</kbd> naviguer · <kbd>1</kbd> à revoir · <kbd>2</kbd> je savais
+</footer>
+
+<script>
+const C = {
+  magie:   {label:"La magie",      color:"var(--gold)"},
+  maisons: {label:"Les maisons",   color:"var(--bleu)"},
+  lieux:   {label:"Les lieux",     color:"var(--vert)"},
+  societe: {label:"La société",    color:"var(--violet)"},
+  figures: {label:"Les figures",   color:"var(--orange)"},
+  chrono:  {label:"Chronologie",   color:"var(--gold)"},
+  creatures:{label:"Créatures",    color:"var(--vert)"},
+  regles:  {label:"Les règles",    color:"var(--rouge)"}
+};
+
+const CARDS = [
+/* ---- MAGIE ---- */
+{d:"magie",q:"Qu'est-ce que l'Écho ?",a:"La <b>force originelle</b> présente en toute chose depuis le Premier Murmure. Il n'obéit à aucune formule : c'est le socle de toute magie."},
+{d:"magie",q:"Qu'est-ce que la Résonance ?",a:"La réponse propre de chaque être à l'Écho. Elle repose sur <b>deux prédispositions génétiques</b> : ressentir l'Écho, et le contrôler."},
+{d:"magie",q:"Qu'est-ce que le Flux ?",a:"L'énergie née de la rencontre entre l'Écho et une Résonance assez forte. Ce n'est <b>pas une réserve</b> enfermée dans le corps."},
+{d:"magie",q:"Quelles sont les deux prédispositions de la Résonance ?",a:"<b>Ressentir</b> l'Écho, et <b>le contrôler</b>. Un Résonant complet possède les deux."},
+{d:"magie",q:"Qu'est-ce qu'un Sans-Flux ?",a:"Un humain dont la Résonance est <b>trop faible</b> pour produire un Flux exploitable. Il représente la majorité de l'humanité et se tourne naturellement vers la science."},
+{d:"magie",q:"Qu'est-ce qu'un Dissonant ?",a:"Quelqu'un né de parents Sans-Flux qui ne possède en général <b>qu'une seule</b> des deux prédispositions. Les plus rares ont les deux : ils sont alors pleinement Résonants. Le terme reste une <b>insulte</b>."},
+{d:"magie",q:"Qu'est-ce que le Voile ?",a:"Un phénomène qui rend un lieu chargé en Flux <b>difficile à remarquer</b> pour les Sans-Flux."},
+{d:"magie",q:"Quelle est la différence entre Voile naturel et voile artificiel ?",a:"Le <b>naturel</b> se forme spontanément autour d'un lieu chargé en Flux. L'<b>artificiel</b> est posé volontairement ; il peut se superposer au naturel et parfois le perturber."},
+{d:"magie",q:"Qu'est-ce qu'un catalyseur ?",a:"L'objet qui canalise le Flux : baguette, sceptre, bâton, flûte… À l'entrée à Elderwood, c'est obligatoirement une <b>baguette</b>."},
+{d:"magie",q:"Qu'est-ce que la Source de Vehr ?",a:"« La Source ». Un bassin dont l'eau <b>révèle la couleur du Flux</b> de chaque Résonant. Découverte par Eldric Falcon en 1298."},
+{d:"magie",q:"Qu'est-ce que la Magie d'usage ?",a:"La magie du <b>geste et de l'instant</b> : intention, formule, catalyseur. Cours, duels, soins, enchantements simples. La forme la plus répandue."},
+{d:"magie",q:"Qu'est-ce que la Runomancie ?",a:"La magie qui inscrit le Flux dans la <b>durée</b>. Chaque rune est une fréquence retranscrite ; plusieurs runes forment un accord qui protège un lieu, verrouille un passage ou conserve une mémoire."},
+{d:"magie",q:"Comment se manifeste le Flux chez un jeune sorcier ?",a:"<b>Sans contrôle</b> : une peur qui repousse un danger, une colère qui fait trembler un objet. Apprendre la magie, c'est diriger volontairement ce qu'il fait déjà instinctivement."},
+
+/* ---- MAISONS ---- */
+{d:"maisons",q:"Flux Bleu : quelle maison, quelles valeurs ?",a:"<b>Aerwyn</b>. Courage, protection, action. Boucliers, soutien, évacuation : se placer entre le danger et ceux qu'on protège."},
+{d:"maisons",q:"Flux Vert : quelle maison, quelles valeurs ?",a:"<b>Brumval</b>. Stabilité, loyauté, continuité. Soins, enchantements durables, tenir dans la durée."},
+{d:"maisons",q:"Flux Orange : quelle maison, quelles valeurs ?",a:"<b>Falcon</b>. Savoir, curiosité, créativité. Observer, expérimenter, inventer quand les réponses connues ne suffisent plus."},
+{d:"maisons",q:"Flux Violet : quelle maison, quelles valeurs ?",a:"<b>Venatrix</b>. Ambition, maîtrise, influence. Dévier un sort, récolter une information, reprendre le contrôle d'une situation."},
+{d:"maisons",q:"Qui a fondé la maison Aerwyn, et quelle est sa créature ?",a:"<b>Althea Aerwyn</b>. Sa créature est l'<b>Ephyr</b>. Devise : « J'agis avec droiture et intégrité. »"},
+{d:"maisons",q:"Qui a fondé la maison Brumval, et quelle est sa créature ?",a:"<b>Hector Brumval</b>. Sa créature est le <b>Valdorn</b>. Devise : « Ma force, c'est de rester fidèle à ceux qui comptent sur moi. »"},
+{d:"maisons",q:"Qui a fondé la maison Falcon, et quelle est sa créature ?",a:"<b>Eldric Falcon</b>. Sa créature est l'<b>Aetherion</b>. Devise : « La connaissance est une arme redoutable. »"},
+{d:"maisons",q:"Qui a fondé la maison Venatrix, et quelle est sa créature ?",a:"<b>Selena Venatrix</b>. Sa créature est l'<b>Akkorokamui</b>. Devise : « Je tire les ficelles, proprement et sans bruit. »"},
+{d:"maisons",q:"Quelle famille originelle est rattachée à chaque maison ?",a:"Aerwyn → <b>Caerwyn</b> · Brumval → <b>Hearthbane</b> · Falcon → <b>Valemont</b> · Venatrix → <b>Dravenholt</b>."},
+{d:"maisons",q:"Peut-on changer de maison ?",a:"<b>Non.</b> Jamais, y compris via un wipe ou un RPK forcé pour refaire un personnage. Bannissement définitif."},
+
+/* ---- LIEUX ---- */
+{d:"lieux",q:"Quelle est la salle commune d'Aerwyn ?",a:"<b>La Veillée Bleue</b>. Toit de verre incassable, armures des anciens défenseurs du château."},
+{d:"lieux",q:"Quelle est la salle commune de Brumval ?",a:"<b>Le Grand Foyer</b>. La plus chaleureuse du château, réchauffée par un feu qui ne s'éteint jamais."},
+{d:"lieux",q:"Quelle est la salle commune de Falcon ?",a:"<b>L'Observatoire des Hautes-Vues</b>. Dans les plus hautes tours, accessible par un pont suspendu."},
+{d:"lieux",q:"Quelle est la salle commune de Venatrix ?",a:"<b>Le Salon des Ombres</b>. Dans les sous-sols, ouverte sur les profondeurs du lac par deux grandes baies vitrées."},
+{d:"lieux",q:"À quoi sert l'Atelier des Catalyseurs ?",a:"Salle technique où les élèves apprennent à <b>entretenir et réparer</b> baguettes, sceptres et bâtons."},
+{d:"lieux",q:"Qu'est-ce que la Forge Runique, et qui y a accès ?",a:"Le lieu de la runomancie et des expériences, <b>profondément enfouie sous le château</b>. Réservée aux <b>élèves avancés</b>."},
+{d:"lieux",q:"Qu'est-ce que Brûlebrume ?",a:"Une zone à haut risque sur l'île : une <b>brume grise et corrosive</b>, sanctuaire des Arachnides d'Éther. Zone RPK."},
+{d:"lieux",q:"Qu'est-ce que Shedwood ?",a:"Le <b>village voisin</b> d'Elderwood. Une statue y rend hommage à Maeve Storm."},
+{d:"lieux",q:"Pourquoi l'infirmerie s'appelle-t-elle Grimshaw ?",a:"En hommage à <b>Edith Grimshaw</b>, ancienne médicomage qui relia sa magie à celle d'élèves malades pour absorber leur douleur, et n'en retrouva jamais entièrement l'usage."},
+{d:"lieux",q:"Quel est le seul lieu où les quatre maisons se retrouvent ?",a:"<b>La Grande Salle</b>, le cœur du château. Les Cuisines Hearthbane se trouvent juste en dessous."},
+
+/* ---- SOCIÉTÉ ---- */
+{d:"societe",q:"Qu'est-ce que l'AMRU ?",a:"Les <b>Autorités Magiques du Royaume-Uni</b> : l'autorité centrale de la société magique britannique. Lois, sécurité, institutions, créatures, artefacts. Ce sont eux qui repèrent les Dissonants."},
+{d:"societe",q:"Quelles sont les quatre familles originelles ?",a:"<b>Dravenholt, Caerwyn, Hearthbane, Valemont.</b> 6 slots joueurs et 2 slots streamer chacune."},
+{d:"societe",q:"Quelles sont les deux familles notables ?",a:"<b>Belladorn</b> (alchimie, domaine de la Chaudronnerie) et <b>Ravenscroft</b> (runomancie)."},
+{d:"societe",q:"Que faut-il pour porter un nom de famille officielle ?",a:"Une <b>naissance validée par le staff</b>. Cela vaut pour les familles originelles, notables et réputées."},
+{d:"societe",q:"Qu'est-ce qu'être « de sang pur » ?",a:"Avoir <b>plusieurs générations de Résonants</b> avant soi. Une famille non officielle peut l'être aussi, sans la notoriété."},
+{d:"societe",q:"Combien de membres au maximum pour une famille non officielle ?",a:"<b>5 membres.</b> Les liens de cousins ou d'autres branches avec des noms différents ne sont pas acceptés."},
+{d:"societe",q:"Qui représente chaque famille originelle à Elderwood ?",a:"<b>Seraphine Caerwyn</b> (capitaine Razeball Aerwyn), <b>Petra Hearthbane</b> (4e année), <b>Ebenezer Valemont</b>, <b>Isolde Dravenholt</b> (5e année)."},
+{d:"societe",q:"Qui sont les Glenhart ?",a:"La famille spécialiste des <b>créatures magiques</b>. Deux traditions : les <b>Compagnons</b> (soin, observation rapprochée) et les <b>Arpenteurs</b> (terrains sauvages)."},
+{d:"societe",q:"Qu'est-ce que le Razeball ?",a:"Le sport du monde magique, anciennement « Razorball ». Joué à cent mètres de hauteur : envoyer une <b>sphère métallique</b> dans le <b>Cœur</b> adverse. Six joueurs par équipe."},
+{d:"societe",q:"Quels sont les cinq postes au Razeball ?",a:"<b>Gardien</b> (dernière ligne), <b>Finisher</b> (tirs longs), <b>Playmaker</b> (organise), <b>Enforcer</b> (physique), <b>Lights Out</b> (interception)."},
+{d:"societe",q:"Quelle est la monnaie du monde magique ?",a:"La <b>Couronne</b>. Une arnaque est plafonnée à <b>2500 Couronnes</b>."},
+
+/* ---- FIGURES ---- */
+{d:"figures",q:"Qui était Arthurius Glenwood ?",a:"L'<b>ancien directeur d'Elderwood</b>, tué en 2026 lors d'une embuscade de l'Ascendance. Des rumeurs le lient au <b>Cercle du Frêne</b>."},
+{d:"figures",q:"Qui est Alistair Valemont ?",a:"Le <b>patriarche des Valemont</b>, figure influente de l'AMRU. Il défend une application stricte du Secret magique."},
+{d:"figures",q:"Qu'a fait Cadoc Caerwyn ?",a:"En <b>1958</b>, dans la baie de Lituya, il refusa d'évacuer et tint une barrière de protection <b>trois jours et trois nuits</b>. Il y perdit un bras."},
+{d:"figures",q:"Qu'a fait Maeve Storm ?",a:"Élève Aerwyn au Flux Bleu exceptionnel, elle maintint seule un <b>bouclier sur tout Shedwood</b> jusqu'au dernier habitant évacué. Elle succomba peu après ; sa statue domine la place."},
+{d:"figures",q:"Qu'est-ce que la Méthode Ravenscroft ?",a:"Créée par <b>Edgar Ravenscroft</b> au XVe siècle : neutraliser un système runique instable <b>section par section</b> plutôt que de le détruire brutalement."},
+{d:"figures",q:"Qu'a fait Bénédicte Hearthbane ?",a:"Lors du <b>Grand Incendie de Londres (1666)</b>, elle détourna un réseau runique pour évacuer les familles résonantes sans révéler leur existence. Cela inspira le Tunnel du Faux Pas."},
+{d:"figures",q:"Qu'a fait Rowena Glenhart ?",a:"En <b>1890</b>, elle mena une expédition de quarante jours dans la forêt de Shedwood. <b>Deux membres disparurent</b> sans laisser de corps ; elle n'a jamais dit ce qui s'était passé."},
+
+/* ---- CHRONO ---- */
+{d:"chrono",q:"1298",a:"La <b>découverte de la Source de Vehr</b> par Falcon, sur une île sans nom protégée par un voile magique."},
+{d:"chrono",q:"1300",a:"La <b>fondation d'Elderwood</b> par Falcon, Aerwyn, Venatrix et Brumval."},
+{d:"chrono",q:"1432",a:"La <b>Sentence de Mireille</b> : Gwendolyn Caerwyn applique une sanction controversée qui divise encore la maison Aerwyn."},
+{d:"chrono",q:"1463",a:"La <b>Flamme Ouverte</b> : Elspeth Hearthbane organise le premier grand festival ouvert à toutes les entités magiques."},
+{d:"chrono",q:"1863",a:"La <b>codification du Razorball</b> par Corvinus Valemont."},
+{d:"chrono",q:"1944–1945",a:"Le <b>Grand Confinement</b> : Cassiopée Valemont rédige les décrets d'isolation du monde magique."},
+{d:"chrono",q:"Que s'est-il passé lors du coup d'État de 2026 ?",a:"L'Ascendance attaque l'AMRU. La tentative <b>échoue</b>, mais le <b>Ministre est assassiné</b>. L'Ascendance est officialisée comme groupe extrémiste dangereux."},
+{d:"chrono",q:"Qu'est-ce que la Rupture du Voile ?",a:"En <b>2026</b>, le Voile d'Elderwood cède quelques minutes. Des plaisanciers aperçoivent l'île et la <b>filment</b>. Les vidéos circulent encore."},
+{d:"chrono",q:"Qui est Adam Wrightmoore ?",a:"Le <b>dirigeant présumé de l'Ascendance</b>, capturé après la mort d'Arthurius Glenwood et incarcéré au centre pénitentiaire de <b>Briseflux</b>."},
+{d:"chrono",q:"Quelle est la situation actuelle entre les deux mondes ?",a:"Les autorités <b>renforcent le Secret</b> et l'isolement, ce qui pèse sur la population. Le nombre de <b>Dissonants augmente</b>, et une partie de l'opinion devient réceptive aux idées de l'Ascendance."},
+
+/* ---- CRÉATURES ---- */
+{d:"creatures",q:"Le Brisecerat",a:"Créature <b>côtière</b>, discrète et farouche : elle fuit plutôt que de se défendre. Son dos est couvert de <b>cératine</b>, utilisée pour des équipements de protection."},
+{d:"creatures",q:"Le Scalvignus",a:"Un <b>cerf couvert d'écailles</b>, forestier et paisible. Ses bois tombent en fin d'hiver et servent à confectionner certains <b>catalyseurs</b>."},
+{d:"creatures",q:"L'Échoïde",a:"Né d'une <b>structure runique</b>, il garde savoir, souvenirs et personnalité de son créateur. Sa mémoire se fragmente avec le temps : confus, obsessionnel, <b>dangereux et imprévisible</b>."},
+{d:"creatures",q:"L'Ornicabal",a:"Semi-aquatique, sociable et apprivoisable, mais <b>brusquement agressif</b> sur son territoire. Ses écailles hydrophobes servent aux équipements imperméables."},
+{d:"creatures",q:"L'Ephyr",a:"Un grand <b>équidé ailé</b>, farouche. Il ne se lie qu'à ceux qu'il juge dignes, mais sa fidélité devient alors presque absolue. Symbole d'<b>Aerwyn</b>."},
+{d:"creatures",q:"Le Valdorn",a:"Un <b>ursidé immense</b> lié aux forêts anciennes. Il ressent les intentions de ceux qui l'approchent, et la végétation revit sur son passage. Symbole de <b>Brumval</b>."},
+{d:"creatures",q:"L'Aetherion",a:"Un <b>immense rapace</b> capable de percevoir l'Écho, les Résonances et les mouvements du Flux avec une précision exceptionnelle. Symbole de <b>Falcon</b>."},
+{d:"creatures",q:"L'Akkorokamui",a:"Créature marine titanesque, <b>télépathe</b>, d'une intelligence proche de l'humain. La plus célèbre, <b>Thalassia</b>, veille sur les eaux d'Elderwood. Symbole de <b>Venatrix</b>."},
+{d:"creatures",q:"Les Dragons existent-ils encore ?",a:"<b>Personne ne peut l'affirmer.</b> Ils appartiennent davantage à la légende. Il subsiste des lignées anciennes comme les wyvernes ou les wyrms."},
+
+/* ---- RÈGLES ---- */
+{d:"regles",q:"À quoi sert le /me ?",a:"À décrire une <b>action physique</b> de ton personnage.<br><i>/me tend la main à la personne en face de lui.</i>"},
+{d:"regles",q:"À quoi sert le /it ?",a:"À décrire une <b>action environnementale</b>, pas une action directe.<br><i>/it Une tension sera ressentie dans la forêt.</i>"},
+{d:"regles",q:"À quoi sert le /na ?",a:"À une <b>narration globale</b> envoyée à tout le serveur, à ne pas spammer.<br><i>/na Une partie de la forêt sera carbonisée.</i>"},
+{d:"regles",q:"Peut-on écrire une pensée en /me, /it ou /na ?",a:"<b>Jamais.</b> Au mieux « /it Cornellius semblera pensif », sans détailler. Si tu veux insinuer, parle."},
+{d:"regles",q:"Quels sont les quatre degrés de réussite d'un roll ?",a:"<b>1–10</b> échec critique · <b>11–49</b> échec · <b>50–89</b> réussite · <b>90–100</b> réussite critique."},
+{d:"regles",q:"Quel délai entre deux rolls pour la même action ?",a:"<b>Une minute</b>, sauf en cas d'échec critique."},
+{d:"regles",q:"Qu'est-ce que le Fear RP ?",a:"L'obligation de prendre le danger au sérieux : <b>avoir peur, hésiter, fuir, obéir</b>. Ton personnage n'est pas invincible."},
+{d:"regles",q:"Qu'est-ce que le Pain RP ?",a:"L'obligation de <b>réagir de façon crédible à la douleur</b> : grimacer, ralentir, montrer des signes de souffrance."},
+{d:"regles",q:"Qu'est-ce que le Mass RP ?",a:"Prendre en compte la <b>présence passive des PNJ et civils</b> dans les lieux publics, et adapter son comportement à l'environnement."},
+{d:"regles",q:"Qu'est-ce que le Win RP ?",a:"Faire en sorte que son personnage <b>réussisse toujours</b>, sans obstacle ni conséquence. C'est interdit : le RP doit avoir des défaites crédibles."},
+{d:"regles",q:"Qu'est-ce que le Safe RP ?",a:"Jouer systématiquement pour <b>protéger son personnage</b> sans jamais prendre de risque. Interdit : ton personnage doit accepter les risques de ses choix."},
+{d:"regles",q:"Qu'est-ce que le Force RP ?",a:"<b>Imposer</b> une action, une interaction ou une conséquence à un autre joueur sans son accord. Interdit : le RP se fait dans le consentement mutuel."},
+{d:"regles",q:"Quelles sont les deux durées de la New Life Rule ?",a:"<b>15 minutes</b> pour oublier tout ce qui a précédé la mort. <b>20 minutes</b> avant de pouvoir revenir sur la zone."},
+{d:"regles",q:"Quelle est la temporalité du serveur ?",a:"<b>2 semaines IRL = 1 an de scolarité.</b> Ton personnage a <b>15 ans</b> le jour de sa rentrée, pas plus, pas moins."},
+{d:"regles",q:"Quelles sont les zones RPK ON ?",a:"<b>Brûlebrume</b>, la <b>cathédrale et le cimetière</b>, les <b>grottes</b>, l'<b>Île de la Tour</b>, le <b>bureau du Directeur</b>, le <b>siège de l'AMRU</b> (hors hall) et la <b>prison de Briseflux</b>."},
+{d:"regles",q:"Que faut-il avant chaque sort ?",a:"Une <b>incantation verbale</b>. Pas de sort inventé : les incantations sont les vraies formules du lore."},
+{d:"regles",q:"Que peut contenir le background de ton personnage ?",a:"Il peut avoir été <b>touché</b> par les grands événements, mais jamais y avoir joué un <b>rôle majeur</b>. Pas de magie avancée, pas de spécialité unique à l'arrivée."},
+{d:"regles",q:"Les romances sont-elles autorisées ?",a:"<b>Oui</b>, si elles restent dans des limites respectueuses du roleplay. Les scènes à caractère sexuel sont interdites."}
+];
+
+/* ---------- state ---------- */
+let deck = "all", order = [], idx = 0, known = new Set(), missed = new Set();
+
+const $ = id => document.getElementById(id);
+const card = $("card"), inner = card.querySelector(".inner");
+
+function pool(){ return deck === "all" ? CARDS.map((_,i)=>i) : CARDS.map((_,i)=>i).filter(i=>CARDS[i].d===deck); }
+
+function buildDecks(){
+  const wrap = $("decks");
+  const mk = (key,label,n)=>{
+    const b = document.createElement("button");
+    b.className = "deck"; b.dataset.k = key;
+    b.innerHTML = label + ' <span class="n">' + n + '</span>';
+    b.setAttribute("aria-pressed", key === deck);
+    b.onclick = () => { deck = key; start(); };
+    wrap.appendChild(b);
+  };
+  mk("all","Tout",CARDS.length);
+  for (const k in C) mk(k, C[k].label, CARDS.filter(c=>c.d===k).length);
+}
+
+function syncDecks(){
+  document.querySelectorAll(".deck").forEach(b=>b.setAttribute("aria-pressed", b.dataset.k === deck));
+}
+
+function shuffle(a){
+  for (let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function start(list){
+  order = list || shuffle(pool());
+  idx = 0; known.clear(); missed.clear();
+  syncDecks(); $("done").classList.add("hidden");
+  card.classList.remove("hidden"); $("controls").classList.remove("hidden");
+  document.querySelector(".meter").classList.remove("hidden");
+  render();
+}
+
+function render(){
+  if (idx >= order.length) return finish();
+  const c = CARDS[order[idx]];
+  const col = C[c.d].color;
+  card.classList.remove("flipped");
+  card.style.setProperty("--c", col);
+  $("tagF").textContent = C[c.d].label;
+  $("tagB").textContent = C[c.d].label;
+  $("q").innerHTML = c.q;
+  $("a").innerHTML = c.a;
+  $("pos").textContent = (idx+1) + " / " + order.length;
+  $("fill").style.width = (idx / order.length * 100) + "%";
+  $("tally").textContent = known.size + " ✓";
+}
+
+function finish(){
+  card.classList.add("hidden"); $("controls").classList.add("hidden");
+  document.querySelector(".meter").classList.add("hidden");
+  $("done").classList.remove("hidden");
+  const total = order.length;
+  $("finalScore").innerHTML = "<b>" + known.size + " / " + total + "</b> cartes sues" +
+    (missed.size ? " — " + missed.size + " à revoir" : " — sans faute, bien joué");
+  $("redo").classList.toggle("hidden", missed.size === 0);
+}
+
+function mark(ok){
+  const i = order[idx];
+  if (ok){ known.add(i); missed.delete(i); } else { missed.add(i); known.delete(i); }
+  idx++; render();
+}
+
+/* ---------- events ---------- */
+card.onclick = () => card.classList.toggle("flipped");
+$("ok").onclick = () => mark(true);
+$("ko").onclick = () => mark(false);
+$("prev").onclick = () => { if (idx > 0){ idx--; render(); } };
+$("shuffle").onclick = () => start();
+$("again").onclick = () => start();
+$("redo").onclick = () => start(shuffle([...missed]));
+
+document.addEventListener("keydown", e => {
+  if ($("done").classList.contains("hidden") === false) return;
+  if (e.key === " "){ e.preventDefault(); card.classList.toggle("flipped"); }
+  else if (e.key === "ArrowRight"){ e.preventDefault(); if (idx < order.length){ idx++; render(); } }
+  else if (e.key === "ArrowLeft"){ e.preventDefault(); if (idx > 0){ idx--; render(); } }
+  else if (e.key === "1"){ mark(false); }
+  else if (e.key === "2"){ mark(true); }
+});
+
+buildDecks();
+start();
+</script>
+</body>
+</html>

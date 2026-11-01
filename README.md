@@ -2,7 +2,7 @@
 
 Fiche de révision non officielle du serveur RP **Elderwood** : lore, société magique, créatures et règles, rassemblés sur une seule page avec une recherche instantanée.
 
-👉 **[Consulter la fiche](https://DarKexxFR.github.io/elderwood/)**
+👉 **[Consulter la fiche](https://DarKexxFR.github.io/Elderwood/)** · 🃏 **[Réviser en flashcards](https://DarKexxFR.github.io/Elderwood/flashcards.html)**
 
 ## Contenu
 
@@ -18,10 +18,20 @@ Fiche de révision non officielle du serveur RP **Elderwood** : lore, société 
 | Les règles | Narrations, rolls, NLR, zones RPK, obligatoire / interdit |
 | Créer son personnage | Ce qui est autorisé et ce qui demande une validation staff |
 
+## Les flashcards
+
+88 cartes réparties en 8 thèmes (magie, maisons, lieux, société, figures, chronologie, créatures, règles), ou toutes mélangées.
+
+- Tirage aléatoire, clic pour retourner la carte
+- Marquage « je savais » / « à revoir », score en fin de deck
+- Reprise ciblée des cartes ratées
+- Raccourcis : `Espace` retourner, `←` `→` naviguer, `1` à revoir, `2` je savais
+
 ## Fichiers
 
 - `index.html` — la fiche interactive, page unique, sans dépendance
-- `elderwood-fiche.pdf` — la même fiche en PDF A4, 10 pages, imprimable
+- `flashcards.html` — les 88 flashcards, page unique, sans dépendance
+- `elderwood-fiche.pdf` — la fiche en PDF A4, 10 pages, imprimable
 
 ## Mettre en ligne
 
