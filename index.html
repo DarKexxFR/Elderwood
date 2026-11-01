@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elderwood — Fiche de révision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0e1620;
+  --ink-2:#141f2c;
+  --ink-3:#1b2836;
+  --line:#2a3a4c;
+  --text:#dfe6ee;
+  --text-dim:#93a3b5;
+  --gold:#c8a459;
+  --bleu:#5b8fd6;
+  --vert:#5fa87a;
+  --orange:#d68a45;
+  --violet:#9ب7bc4;
+  --violet:#9b7bc4;
+  --rouge:#c96a6a;
+  --radius:3px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="light"]){
+    --ink:#f2eee6; --ink-2:#e9e3d8; --ink-3:#e2dace; --line:#cabfae;
+    --text:#221d17; --text-dim:#6b6154; --gold:#8a6a1f;
+    --bleu:#2f5f9e; --vert:#2f7a4e; --orange:#a45a12; --violet:#6b4a94; --rouge:#a03c3c;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#0e1620; --ink-2:#141f2c; --ink-3:#1b2836; --line:#2a3a4c;
+  --text:#dfe6ee; --text-dim:#93a3b5; --gold:#c8a459;
+  --bleu:#5b8fd6; --vert:#5fa87a; --orange:#d68a45; --violet:#9b7bc4; --rouge:#c96a6a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:'Karla',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:15.5px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:inherit}
+
+/* ---------- hero ---------- */
+.hero{
+  padding:clamp(48px,9vw,110px) 24px clamp(34px,5vw,54px);
+  text-align:center;border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--gold) 12%, transparent) 0%, transparent 62%),
+    var(--ink);
+}
+.hero .mark{
+  width:44px;height:44px;margin:0 auto 22px;display:block;opacity:.85;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:600;font-size:clamp(46px,10vw,96px);line-height:.95;
+  margin:0;letter-spacing:.01em;
+}
+.hero .sub{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:clamp(17px,2.6vw,23px);color:var(--text-dim);margin:14px 0 0;
+}
+.hero .rule{width:64px;height:1px;background:var(--gold);margin:26px auto 0;opacity:.7}
+
+/* ---------- search ---------- */
+.searchwrap{
+  position:sticky;top:0;z-index:50;background:var(--ink-2);
+  border-bottom:1px solid var(--line);
+  padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;
+}
+#q{
+  background:var(--ink);border:1px solid var(--line);color:var(--text);
+  border-radius:var(--radius);padding:9px 14px;font:inherit;font-size:14px;
+  width:min(360px,100%);
+}
+#q:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+#q::placeholder{color:var(--text-dim)}
+.hint{font-size:12.5px;color:var(--text-dim)}
+.navlinks{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.navlinks a{
+  text-decoration:none;font-size:12.5px;color:var(--text-dim);
+  padding:5px 9px;border:1px solid transparent;border-radius:var(--radius);
+}
+.navlinks a:hover,.navlinks a:focus-visible{color:var(--gold);border-color:var(--line)}
+
+/* ---------- layout ---------- */
+main{max-width:1000px;margin:0 auto;padding:0 20px 90px}
+section{padding-top:52px}
+h2{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;
+  font-size:clamp(28px,4.6vw,40px);margin:0 0 4px;line-height:1.1;
+}
+.sec-note{color:var(--text-dim);font-size:14px;margin:0 0 22px}
+h3{
+  font-family:'Karla',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.06em;color:var(--gold);margin:30px 0 12px;
+}
+h2::after{content:"";display:block;width:100%;height:1px;background:var(--line);margin-top:12px}
+
+/* ---------- definition rows ---------- */
+.defs{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.def{display:grid;grid-template-columns:190px 1fr;gap:18px;background:var(--ink-2);padding:13px 16px}
+.def dt{font-weight:700;color:var(--text)}
+.def dd{margin:0;color:var(--text-dim)}
+.def dd b{color:var(--text);font-weight:600}
+@media (max-width:620px){.def{grid-template-columns:1fr;gap:3px}}
+
+/* ---------- houses ---------- */
+.houses{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.house{
+  background:var(--ink-2);border:1px solid var(--line);border-top:3px solid var(--c);
+  border-radius:var(--radius);padding:18px 18px 20px;
+}
+.house .cname{font-family:'Cormorant Garamond',serif;font-size:29px;font-weight:600;color:var(--c);line-height:1}
+.house .beast{font-size:12.5px;color:var(--text-dim);margin:2px 0 12px}
+.house .motto{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;margin:0 0 12px;color:var(--text)}
+.house ul{margin:0;padding-left:17px;color:var(--text-dim);font-size:14px}
+.house .fam{margin-top:13px;padding-top:11px;border-top:1px solid var(--line);font-size:13px;color:var(--text-dim)}
+.house .fam b{color:var(--c)}
+
+/* ---------- generic card grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:12px}
+.card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.card .t{font-weight:700;margin-bottom:3px}
+.card .d{font-size:13.5px;color:var(--text-dim)}
+.card.accent{border-left:3px solid var(--a,var(--gold))}
+
+/* ---------- timeline ---------- */
+.tl{border-left:1px solid var(--line);margin-left:8px;padding-left:0}
+.ev{position:relative;padding:0 0 22px 26px}
+.ev::before{
+  content:"";position:absolute;left:-4.5px;top:8px;width:8px;height:8px;
+  background:var(--ink);border:1px solid var(--gold);border-radius:50%;
+}
+.ev.hot::before{background:var(--rouge);border-color:var(--rouge)}
+.ev .y{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1}
+.ev.hot .y{color:var(--rouge)}
+.ev .n{font-weight:600;margin-top:2px}
+.ev .d{font-size:13.5px;color:var(--text-dim)}
+
+/* ---------- rules ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+.box{border:1px solid var(--line);border-radius:var(--radius);padding:15px 17px;background:var(--ink-2)}
+.box h4{margin:0 0 9px;font-size:14px;font-weight:700;letter-spacing:.03em}
+.box.no h4{color:var(--rouge)}
+.box.yes h4{color:var(--vert)}
+.box ul{margin:0;padding-left:17px;font-size:14px;color:var(--text-dim)}
+.box li{margin-bottom:3px}
+.cmd{display:grid;grid-template-columns:62px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.cmd:last-child{border-bottom:0}
+.cmd code{
+  font-family:'Karla',monospace;font-weight:700;color:var(--gold);
+  font-size:14.5px;
+}
+.cmd .ex{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--text-dim);font-size:15px;display:block;margin-top:2px}
+.rolls{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:6px}
+.roll{border:1px solid var(--line);border-left:3px solid var(--r);border-radius:var(--radius);padding:9px 12px;background:var(--ink-2)}
+.roll .n{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--r)}
+.roll .l{font-size:12.5px;color:var(--text-dim)}
+.warn{
+  border:1px solid var(--rouge);border-radius:var(--radius);
+  background:color-mix(in srgb, var(--rouge) 10%, transparent);
+  padding:13px 16px;font-size:14px;margin-top:14px;
+}
+.warn b{color:var(--rouge)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:12.5px;border:1px solid var(--line);border-radius:var(--radius);padding:3px 9px;color:var(--text-dim);background:var(--ink-3)}
+.scroll{overflow-x:auto}
+footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;color:var(--text-dim);font-size:13px}
+.nores{display:none;padding:30px 0;text-align:center;color:var(--text-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px}
+.hidden{display:none!important}
+mark{background:color-mix(in srgb,var(--gold) 40%,transparent);color:var(--text);border-radius:2px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+    <circle cx="24" cy="24" r="21" stroke="var(--gold)" stroke-width="1.2"/>
+    <circle cx="24" cy="24" r="13" stroke="var(--gold)" stroke-width="1.2" opacity=".6"/>
+    <circle cx="24" cy="24" r="4.5" fill="var(--gold)" opacity=".85"/>
+    <path d="M24 3v42M3 24h42" stroke="var(--gold)" stroke-width=".8" opacity=".35"/>
+  </svg>
+  <h1>Elderwood</h1>
+  <p class="sub">Fiche de révision — lore, société et règles du serveur</p>
+  <div class="rule"></div>
+</header>
+
+<div class="searchwrap">
+  <input id="q" type="search" placeholder="Chercher un mot : voile, Dissonant, RPK…" aria-label="Chercher dans la fiche">
+  <nav class="navlinks">
+    <a href="#magie">Magie</a>
+    <a href="#maisons">Maisons</a>
+    <a href="#lieux">Lieux</a>
+    <a href="#societe">Société</a>
+    <a href="#figures">Figures</a>
+    <a href="#chrono">Chronologie</a>
+    <a href="#creatures">Créatures</a>
+    <a href="#regles">Règles</a>
+    <a href="#perso">Perso</a>
+  </nav>
+</div>
+
+<main>
+<p class="nores" id="nores">Rien ne répond à cette recherche.</p>
+
+<!-- ============ MAGIE ============ -->
+<section id="magie">
+  <h2>La magie</h2>
+  <p class="sec-note">Écho → Résonance → Flux. Tout part de là.</p>
+
+  <dl class="defs">
+    <div class="def"><dt>Écho</dt><dd>Force originelle présente en toute chose depuis le <b>Premier Murmure</b>. N'obéit à aucune formule, c'est le socle de toute magie.</dd></div>
+    <div class="def"><dt>Résonance</dt><dd>Réponse propre de chaque être à l'Écho. Repose sur <b>deux prédispositions génétiques</b> : ressentir l'Écho, et le contrôler.</dd></div>
+    <div class="def"><dt>Flux</dt><dd>Énergie née de la rencontre Écho + Résonance. Ce n'est <b>pas une réserve</b> enfermée dans le corps.</dd></div>
+    <div class="def"><dt>Catalyseur</dt><dd>Baguette, sceptre, bâton, flûte… canalise le Flux. À l'entrée à Elderwood : <b>baguette obligatoire</b>.</dd></div>
+    <div class="def"><dt>Voile</dt><dd>Dissimule un lieu chargé en Flux aux Sans-Flux. <b>Naturel</b> (spontané) ou <b>artificiel</b> (posé). L'artificiel peut se superposer au naturel et le perturber.</dd></div>
+    <div class="def"><dt>Source de Vehr</dt><dd>« la Source ». Révèle la couleur du Flux. Découverte par <b>Eldric Falcon en 1298</b>.</dd></div>
+    <div class="def"><dt>Échoïde</dt><dd>Souvenir figé dans une rune instable. Naît d'un lieu trop chargé en Flux.</dd></div>
+  </dl>
+
+  <h3>Les trois statuts</h3>
+  <div class="grid">
+    <div class="card accent" style="--a:var(--bleu)"><div class="t">Résonant</div><div class="d">Le « sorcier ». Ressent <b>et</b> contrôle. Accès à l'éducation magique, à des droits — et au devoir de ne pas exposer la magie.</div></div>
+    <div class="card accent" style="--a:var(--text-dim)"><div class="t">Sans-Flux</div><div class="d">Résonance trop faible. Majorité de l'humanité. Peut traverser un Voile affaibli, mais rationalise et se tourne vers la science.</div></div>
+    <div class="card accent" style="--a:var(--violet)"><div class="t">Dissonant</div><div class="d">Né de parents Sans-Flux, en général avec <b>une seule</b> des deux prédispositions. Ceux qui ont les deux sont pleinement Résonants, repérés par l'AMRU. Le terme reste une <b>insulte</b>.</div></div>
+  </div>
+
+  <h3>Les deux formes de magie</h3>
+  <div class="two">
+    <div class="box"><h4>Magie d'usage</h4><ul>
+      <li>Le geste et l'instant</li><li>Intention + formule + catalyseur</li>
+      <li>La plus répandue : cours, duels, soins, enchantements simples</li>
+      <li>Transformée par l'arrivée des baguettes</li></ul></div>
+    <div class="box"><h4>Runomancie</h4><ul>
+      <li>Inscrire le Flux dans la <b>durée</b></li>
+      <li>Une rune = une fréquence retranscrite en symbole</li>
+      <li>Plusieurs runes = un accord</li>
+      <li>Protéger un lieu, verrouiller, conserver une mémoire</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ MAISONS ============ -->
+<section id="maisons">
+  <h2>Les quatre maisons</h2>
+  <p class="sec-note">Une couleur de Flux, un fondateur, une créature, une famille originelle.</p>
+
+  <div class="houses">
+    <div class="house" style="--c:var(--bleu)">
+      <div class="cname">Aerwyn</div>
+      <div class="beast">Flux Bleu · L'Ephyr · Althea Aerwyn</div>
+      <p class="motto">« J'agis avec droiture et intégrité. »</p>
+      <ul><li>Courage, protection, action</li><li>Honneur, constance</li><li>Boucliers, soutien, évacuation</li><li>Se place entre le danger et les autres</li></ul>
+      <div class="fam"><b>Caerwyn</b> — « Tant qu'Elderwood existe, un Caerwyn veille. »</div>
+    </div>
+
+    <div class="house" style="--c:var(--vert)">
+      <div class="cname">Brumval</div>
+      <div class="beast">Flux Vert · Le Valdorn · Hector Brumval</div>
+      <p class="motto">« Ma force, c'est de rester fidèle à ceux qui comptent sur moi. »</p>
+      <ul><li>Stabilité, loyauté, continuité</li><li>Soins, enchantements durables</li><li>Maintenir, renforcer, restaurer</li><li>Tenir dans la durée</li></ul>
+      <div class="fam"><b>Hearthbane</b> — « Le feu accueille. Le feu dure. »</div>
+    </div>
+
+    <div class="house" style="--c:var(--orange)">
+      <div class="cname">Falcon</div>
+      <div class="beast">Flux Orange · L'Aetherion · Eldric Falcon</div>
+      <p class="motto">« La connaissance est une arme redoutable. »</p>
+      <ul><li>Savoir, curiosité, créativité</li><li>Observe, expérimente, invente</li><li>Sorts nouveaux, artefacts, lieux anciens</li><li>Reproche : vivre trop haut dans ses réflexions</li></ul>
+      <div class="fam"><b>Valemont</b> — « La connaissance régit notre monde. »</div>
+    </div>
+
+    <div class="house" style="--c:var(--violet)">
+      <div class="cname">Venatrix</div>
+      <div class="beast">Flux Violet · L'Akkorokamui · Selena Venatrix</div>
+      <p class="motto">« Je tire les ficelles, proprement et sans bruit. »</p>
+      <ul><li>Ambition, maîtrise, influence</li><li>Stratégie plutôt que spectacle</li><li>Dévier un sort, récolter une info</li><li>Agit rarement sans mesurer les conséquences</li></ul>
+      <div class="fam"><b>Dravenholt</b> — « Le monde appartient à ceux qui en comprennent les rouages. »</div>
+    </div>
+  </div>
+
+  <div class="warn"><b>Changement de maison interdit.</b> Y compris via un wipe ou un RPK forcé pour refaire un personnage. Bannissement définitif.</div>
+</section>
+
+<!-- ============ LIEUX ============ -->
+<section id="lieux">
+  <h2>Les lieux</h2>
+  <p class="sec-note">Le château, les salles communes, l'île.</p>
+
+  <h3>Dans le château</h3>
+  <div class="grid">
+    <div class="card"><div class="t">La Grande Salle</div><div class="d">Le cœur. Seul lieu où les quatre maisons se retrouvent.</div></div>
+    <div class="card"><div class="t">La Bibliothèque</div><div class="d">Manuels, grimoires, sections interdites. Bibliothécaire et fées des bois.</div></div>
+    <div class="card"><div class="t">L'Infirmerie Grimshaw</div><div class="d">Soins et convalescence. Nommée d'après Edith Grimshaw.</div></div>
+    <div class="card"><div class="t">L'Atelier des Catalyseurs</div><div class="d">Entretien et réparation des baguettes, sceptres et bâtons.</div></div>
+    <div class="card"><div class="t">La Forge Runique</div><div class="d">Enfouie sous le château. Réservée aux élèves avancés.</div></div>
+    <div class="card"><div class="t">Les Jardins</div><div class="d">Botanique et repos, modifiés par la proximité de la Source.</div></div>
+    <div class="card"><div class="t">La Grande Volière</div><div class="d">Chouettes, corbeaux et faucons messagers.</div></div>
+    <div class="card"><div class="t">Le Pavillon des Compagnons</div><div class="d">Les familiers des élèves. Garde-chasse et magizoologie.</div></div>
+    <div class="card"><div class="t">Les Cuisines Hearthbane</div><div class="d">Sous la Grande Salle, toujours en mouvement.</div></div>
+  </div>
+
+  <h3>Les salles communes</h3>
+  <div class="grid">
+    <div class="card accent" style="--a:var(--bleu)"><div class="t">La Veillée Bleue</div><div class="d">Aerwyn. Toit de verre incassable, armures des anciens défenseurs.</div></div>
+    <div class="card accent" style="--a:var(--vert)"><div class="t">Le Grand Foyer</div><div class="d">Brumval. La plus chaleureuse, feu qui ne s'éteint jamais.</div></div>
+    <div class="card accent" style="--a:var(--orange)"><div class="t">L'Observatoire des Hautes-Vues</div><div class="d">Falcon. Hautes tours, pont suspendu.</div></div>
+    <div class="card accent" style="--a:var(--violet)"><div class="t">Le Salon des Ombres</div><div class="d">Venatrix. Sous-sols, deux baies ouvertes sur le lac.</div></div>
+  </div>
+
+  <h3>Sur l'île</h3>
+  <div class="grid">
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Brûlebrume</div><div class="d">Brume grise et corrosive, sanctuaire des Arachnides d'Éther. Zone RPK.</div></div>
+    <div class="card"><div class="t">Le Terrain de Razeball</div><div class="d">Taillé dans la falaise. Cœur de la vie extrascolaire.</div></div>
+    <div class="card"><div class="t">Shedwood</div><div class="d">Le village voisin. Statue de Maeve Storm sur la place.</div></div>
+  </div>
+</section>
+
+<!-- ============ SOCIÉTÉ ============ -->
+<section id="societe">
+  <h2>La société magique</h2>
+  <p class="sec-note">L'autorité, les familles, le sport, la monnaie.</p>
+
+  <div class="box" style="margin-bottom:22px">
+    <h4 style="color:var(--gold)">AMRU — Autorités Magiques du Royaume-Uni</h4>
+    <p style="margin:0;font-size:14px;color:var(--text-dim)">Autorité centrale de la société magique britannique : lois, sécurité, institutions, créatures, artefacts, pratiques réglementées. Elderwood garde son autonomie mais reste un interlocuteur essentiel. Ce sont eux qui repèrent les Dissonants.</p>
+  </div>
+
+  <h3>Hiérarchie des familles</h3>
+  <div class="grid">
+    <div class="card accent" style="--a:var(--gold)"><div class="t">Originelles</div><div class="d">Dravenholt · Caerwyn · Hearthbane · Valemont<div class="tags"><span class="tag">6 slots joueurs</span><span class="tag">2 slots streamer</span></div></div></div>
+    <div class="card accent" style="--a:var(--gold)"><div class="t">Notables</div><div class="d">Belladorn (alchimie) · Ravenscroft (runomancie)<div class="tags"><span class="tag">6 slots joueurs</span><span class="tag">1 slot streamer</span></div></div></div>
+    <div class="card accent" style="--a:var(--text-dim)"><div class="t">Réputées</div><div class="d">À venir après l'ouverture du serveur.<div class="tags"><span class="tag">6 slots joueurs</span></div></div></div>
+    <div class="card accent" style="--a:var(--text-dim)"><div class="t">Non officielles</div><div class="d">Peuvent être de sang pur, sans la notoriété.<div class="tags"><span class="tag">5 membres max</span></div></div></div>
+  </div>
+  <div class="warn"><b>Sang pur</b> = plusieurs générations de Résonants avant soi. Porter un nom de famille officielle exige une <b>naissance validée par le staff</b>.</div>
+
+  <h3>Représentants à Elderwood</h3>
+  <div class="grid">
+    <div class="card accent" style="--a:var(--bleu)"><div class="t">Seraphine Caerwyn</div><div class="d">Capitaine de Razeball des Aerwyn.</div></div>
+    <div class="card accent" style="--a:var(--vert)"><div class="t">Petra Hearthbane</div><div class="d">Élève de quatrième année.</div></div>
+    <div class="card accent" style="--a:var(--orange)"><div class="t">Ebenezer Valemont</div><div class="d">Héritier d'une lignée brillante et exigeante.</div></div>
+    <div class="card accent" style="--a:var(--violet)"><div class="t">Isolde Dravenholt</div><div class="d">Élève de cinquième année.</div></div>
+  </div>
+
+  <h3>Autres familles notables</h3>
+  <div class="grid">
+    <div class="card"><div class="t">Belladorn</div><div class="d">Alchimie, herboristerie, expérimentation. Domaine : la Chaudronnerie. Proches de Falcon et Venatrix.</div></div>
+    <div class="card"><div class="t">Ravenscroft</div><div class="d">Runomancie et structures complexes. Comprendre avant d'intervenir, préparer avant d'agir.</div></div>
+    <div class="card"><div class="t">Glenhart</div><div class="d">Créatures magiques. Deux traditions : les Compagnons (soin, observation) et les Arpenteurs (terrain sauvage).</div></div>
+  </div>
+
+  <h3>Le Razeball</h3>
+  <div class="box">
+    <p style="margin:0 0 10px;font-size:14px;color:var(--text-dim)">Anciennement « Razorball », surnommé « le Raze ». Joué à près de cent mètres de hauteur : envoyer une sphère métallique dans le <b style="color:var(--text)">Cœur</b> adverse. Règlement moderne écrit par <b style="color:var(--text)">Corvinus Valemont en 1863</b>. Première Coupe du Monde en 1896, tous les quatre ans. Six joueurs par équipe.</p>
+    <div class="tags">
+      <span class="tag">Gardien — dernière ligne</span>
+      <span class="tag">Finisher — conclusion, tirs longs</span>
+      <span class="tag">Playmaker — organise, crée les ouvertures</span>
+      <span class="tag">Enforcer — présence physique</span>
+      <span class="tag">Lights Out — interception, destruction</span>
+    </div>
+  </div>
+
+  <h3>Monnaie</h3>
+  <div class="card"><div class="t">La Couronne</div><div class="d">Arnaque plafonnée à <b>2500 Couronnes</b>. Le lore ne donne ni sous-unité ni taux de change.</div></div>
+</section>
+
+<!-- ============ FIGURES ============ -->
+<section id="figures">
+  <h2>Personnages illustres</h2>
+  <p class="sec-note">Ton personnage peut les connaître de nom. Pas les avoir côtoyés sans validation.</p>
+
+  <div class="grid">
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Arthurius Glenwood</div><div class="d">Ancien directeur, tué en 2026 lors d'une embuscade de l'Ascendance. Rumeur : il appartenait au Cercle du Frêne.</div></div>
+    <div class="card accent" style="--a:var(--vert)"><div class="t">Edith Grimshaw</div><div class="d">Médicomage. Relia sa magie à celle d'élèves malades pour absorber leur douleur. Ils survécurent, pas sa magie.</div></div>
+    <div class="card accent" style="--a:var(--orange)"><div class="t">Alistair Valemont</div><div class="d">Patriarche Valemont, haut placé de l'AMRU. Ligne dure sur le Secret magique.</div></div>
+    <div class="card accent" style="--a:var(--bleu)"><div class="t">Cadoc Caerwyn</div><div class="d">1958, baie de Lituya. Refusa d'évacuer, tint une barrière trois jours et trois nuits. Y perdit un bras.</div></div>
+    <div class="card accent" style="--a:var(--vert)"><div class="t">Bénédicte Hearthbane</div><div class="d">Grand Incendie de Londres, 1666. Détourna un réseau runique pour évacuer les familles résonantes. Inspira le Tunnel du Faux Pas.</div></div>
+    <div class="card accent" style="--a:var(--orange)"><div class="t">Edgar Ravenscroft</div><div class="d">XV<sup>e</sup> siècle. Neutralisa un immense Échoïde section par section : la Méthode Ravenscroft.</div></div>
+    <div class="card accent" style="--a:var(--orange)"><div class="t">Rowena Glenhart</div><div class="d">1890, expédition de quarante jours dans Shedwood. Deux disparus, ni corps ni matériel. Elle n'a jamais rien dit.</div></div>
+    <div class="card accent" style="--a:var(--bleu)"><div class="t">Maeve Storm</div><div class="d">Élève Aerwyn, maîtrise exceptionnelle du Flux Bleu. Bouclier sur Shedwood jusqu'au dernier évacué. Morte peu après. Sa statue domine la place.</div></div>
+  </div>
+</section>
+
+<!-- ============ CHRONOLOGIE ============ -->
+<section id="chrono">
+  <h2>Chronologie</h2>
+  <p class="sec-note">Les dates officiellement enseignées à Elderwood. 2026 est l'année chaude.</p>
+
+  <div class="tl">
+    <div class="ev"><div class="y">1298</div><div class="n">La découverte de la Source de Vehr</div><div class="d">Falcon trouve une source révélant la couleur du Flux.</div></div>
+    <div class="ev"><div class="y">1300</div><div class="n">Fondation d'Elderwood</div><div class="d">Falcon, Aerwyn, Venatrix et Brumval fondent l'école.</div></div>
+    <div class="ev"><div class="y">1432</div><div class="n">La Sentence de Mireille</div><div class="d">Gwendolyn Caerwyn applique une sanction qui divise encore Aerwyn.</div></div>
+    <div class="ev"><div class="y">1463</div><div class="n">La Flamme Ouverte</div><div class="d">Elspeth Hearthbane organise le premier festival ouvert à toutes les entités magiques.</div></div>
+    <div class="ev"><div class="y">1863</div><div class="n">La codification du Razorball</div><div class="d">Corvinus Valemont établit le règlement moderne.</div></div>
+    <div class="ev"><div class="y">1944–45</div><div class="n">Le Grand Confinement</div><div class="d">Cassiopée Valemont rédige les décrets d'isolation du monde magique.</div></div>
+    <div class="ev hot"><div class="y">2026</div><div class="n">La tentative de coup d'État</div><div class="d">L'Ascendance attaque l'AMRU. Échec, mais le Ministre est assassiné. L'Ascendance est officialisée comme groupe extrémiste dangereux.</div></div>
+    <div class="ev hot"><div class="y">2026</div><div class="n">La mort d'Arthurius Glenwood</div><div class="d">Embuscade sur une île proche d'Elderwood. Adam Wrightmoore, dirigeant présumé de l'Ascendance, est capturé et incarcéré à Briseflux.</div></div>
+    <div class="ev hot"><div class="y">2026</div><div class="n">La Rupture du Voile</div><div class="d">Le Voile cède quelques minutes. Des plaisanciers filment l'île. Les vidéos circulent encore.</div></div>
+    <div class="ev hot"><div class="y">2026</div><div class="n">Tensions entre les Mondes</div><div class="d">Secret renforcé, isolement pesant, hausse du nombre de Dissonants. Une partie de l'opinion devient réceptive aux idées de l'Ascendance.</div></div>
+  </div>
+</section>
+
+<!-- ============ CRÉATURES ============ -->
+<section id="creatures">
+  <h2>Créatures et entités</h2>
+
+  <h3>Créatures magiques</h3>
+  <div class="grid">
+    <div class="card"><div class="t">Brisecerat</div><div class="d">Côtier, farouche, fuit plutôt que de se défendre. Dos en <b>cératine</b> → équipements de protection.</div></div>
+    <div class="card"><div class="t">Scalvignus</div><div class="d">Cerf à écailles, paisible. Ses bois tombent en fin d'hiver → <b>catalyseurs</b>.</div></div>
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Échoïde</div><div class="d">Né d'une structure runique, garde savoir et souvenirs de son créateur. Sa mémoire se fragmente : confus, obsessionnel, <b>dangereux</b>.</div></div>
+    <div class="card"><div class="t">Ornicabal</div><div class="d">Semi-aquatique, joueur, apprivoisable — mais agressif sur son territoire. Écailles hydrophobes → équipements imperméables.</div></div>
+  </div>
+
+  <h3>Créatures légendaires</h3>
+  <div class="grid">
+    <div class="card accent" style="--a:var(--bleu)"><div class="t">Ephyr</div><div class="d">Équidé ailé. Ne se lie qu'à ceux qu'il juge dignes, mais sa fidélité devient alors presque absolue. Symbole d'Aerwyn.</div></div>
+    <div class="card accent" style="--a:var(--vert)"><div class="t">Valdorn</div><div class="d">Ursidé immense. Ressent les intentions ; la végétation revit sur son passage. Symbole de Brumval.</div></div>
+    <div class="card accent" style="--a:var(--orange)"><div class="t">Aetherion</div><div class="d">Rapace percevant l'Écho, les Résonances et le Flux avec une précision exceptionnelle. Symbole de Falcon.</div></div>
+    <div class="card accent" style="--a:var(--violet)"><div class="t">Akkorokamui</div><div class="d">Créature marine titanesque, télépathe, intelligence humaine. Thalassia veille sur les eaux d'Elderwood. Symbole de Venatrix.</div></div>
+    <div class="card"><div class="t">Dragon</div><div class="d">Légende. Restent des wyvernes et des wyrms. Personne ne peut affirmer qu'ils existent encore.</div></div>
+  </div>
+</section>
+
+<!-- ============ RÈGLES ============ -->
+<section id="regles">
+  <h2>Les règles</h2>
+  <p class="sec-note">Ce qui fait sanctionner, et ce qui fait jouer.</p>
+
+  <h3>Narrations</h3>
+  <div class="box">
+    <div class="cmd"><code>/me</code><div>Action physique de ton personnage.<span class="ex">/me tend la main à la personne en face de lui.</span></div></div>
+    <div class="cmd"><code>/it</code><div>Action environnementale, pas une action directe.<span class="ex">/it Une tension sera ressentie dans la forêt.</span></div></div>
+    <div class="cmd"><code>/na</code><div>Narration globale envoyée à tout le serveur. À ne pas spammer.<span class="ex">/na Une partie de la forêt sera carbonisée.</span></div></div>
+  </div>
+  <div class="warn"><b>Jamais une pensée</b> en /me, /it ou /na. Au mieux : « /it Cornellius semblera pensif », sans détailler.</div>
+
+  <h3>Les rolls</h3>
+  <div class="rolls">
+    <div class="roll" style="--r:var(--rouge)"><div class="n">1 – 10</div><div class="l">Échec critique</div></div>
+    <div class="roll" style="--r:var(--orange)"><div class="n">11 – 49</div><div class="l">Échec</div></div>
+    <div class="roll" style="--r:var(--vert)"><div class="n">50 – 89</div><div class="l">Réussite</div></div>
+    <div class="roll" style="--r:var(--gold)"><div class="n">90 – 100</div><div class="l">Réussite critique</div></div>
+  </div>
+  <p class="sec-note" style="margin-top:10px">Une minute entre deux rolls pour la même action, sauf échec critique.</p>
+
+  <h3>Obligatoire / interdit</h3>
+  <div class="two">
+    <div class="box yes"><h4>Obligatoire</h4><ul>
+      <li><b>Fear RP</b> — avoir peur, hésiter, fuir, obéir</li>
+      <li><b>Pain RP</b> — réagir de façon crédible à la douleur</li>
+      <li><b>Mass RP</b> — tenir compte des PNJ et des lieux</li>
+      <li><b>Incantation verbale</b> avant chaque sort</li>
+      <li>Jouer les effets des potions pour de vrai</li>
+      <li>Assumer les conséquences de ses actes</li>
+      <li>Rec ses scènes, au cas où</li>
+    </ul></div>
+    <div class="box no"><h4>Interdit</h4><ul>
+      <li><b>Metagaming</b>, StreamHack, Double Voc</li>
+      <li><b>Freekill</b>, Free attack, Revenge kill, RPK Flash</li>
+      <li><b>Powergaming</b>, Win RP, Safe RP, Force RP</li>
+      <li>Bunny hopping, use bug, AFK farm, cheats</li>
+      <li>Langage et insinuations HRP</li>
+      <li>Scènes à caractère sexuel (romances OK)</li>
+      <li>Se déconnecter en pleine scène</li>
+    </ul></div>
+  </div>
+
+  <h3>New Life Rule</h3>
+  <div class="two">
+    <div class="box"><h4 style="color:var(--gold)">15 minutes</h4><ul><li>Oubli total des événements, rencontres, positions et conflits d'avant la mort.</li></ul></div>
+    <div class="box"><h4 style="color:var(--gold)">20 minutes</h4><ul><li>Interdiction de revenir sur la zone de la mort, sauf accord RP ou staff.</li></ul></div>
+  </div>
+
+  <h3>Zones RPK ON</h3>
+  <div class="grid">
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Forêt de Brûlebrume</div><div class="d">Zone à risque. Entrée à vos risques et périls.</div></div>
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Cathédrale et cimetière</div><div class="d">Zone à risque. Pas de kill sans ticket.</div></div>
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Grottes</div><div class="d">Zone à risque. Pas de kill sans ticket.</div></div>
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Île de la Tour</div><div class="d">Très haut risque. S'y aventurer sans invitation : RPK sans porte de sortie.</div></div>
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Bureau du Directeur</div><div class="d">Jamais sans invitation. RPK sans porte de sortie.</div></div>
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Siège de l'AMRU</div><div class="d">Hall central public. Le reste : RPK sans porte de sortie.</div></div>
+    <div class="card accent" style="--a:var(--rouge)"><div class="t">Prison de Briseflux</div><div class="d">Laissez-passer AMRU obligatoire. Les abords aussi, porte de sortie une seule fois.</div></div>
+  </div>
+
+  <h3>Temporalité</h3>
+  <div class="two">
+    <div class="box"><h4 style="color:var(--gold)">2 semaines IRL = 1 an de scolarité</h4><ul><li>Le rythme de progression du personnage.</li></ul></div>
+    <div class="box"><h4 style="color:var(--gold)">15 ans à la rentrée</h4><ul><li>Pas plus, pas moins. Aucune exception.</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ PERSO ============ -->
+<section id="perso">
+  <h2>Créer son personnage</h2>
+  <p class="sec-note">Le principe général : tout est possible tant que ça ne crée pas d'avantage disproportionné et n'impose rien aux autres joueurs.</p>
+
+  <div class="two">
+    <div class="box yes"><h4>Autorisé</h4><ul>
+      <li>Avoir été <b>touché</b> par les grands événements</li>
+      <li>Une famille inventée riche, ancienne ou reconnue dans son domaine</li>
+      <li>Une noblesse <b>Sans-Flux</b>, sans avantage RP</li>
+      <li>Des proches à l'AMRU sur des postes classiques</li>
+      <li>Des facilités liées à son éducation</li>
+      <li>Être de sang pur dans une famille non officielle</li>
+    </ul></div>
+    <div class="box no"><h4>Interdit sans validation</h4><ul>
+      <li>Avoir joué un <b>rôle majeur</b> dans le lore</li>
+      <li>Une lignée noble propre au monde résonant</li>
+      <li>Une influence politique ou institutionnelle majeure</li>
+      <li>Un proche Ministre, directeur ou haut responsable</li>
+      <li>Maîtriser déjà des magies avancées ou rares</li>
+      <li>Une spécialité ou compétence unique</li>
+      <li>Un autre catalyseur que la baguette</li>
+      <li>Hybride, lycanthrope, créature consciente</li>
+      <li>Un arc mage noir</li>
+      <li>Un lien direct avec une figure majeure</li>
+    </ul></div>
+  </div>
+
+  <div class="warn" style="margin-top:18px"><b>Nom RP.</b> Format Prénom Nom, original et crédible. Pas de nom réel, de célébrité ou de personnage connu. Pas de chiffres, de caractères spéciaux ni de majuscules abusives.</div>
+</section>
+</main>
+
+<footer>Fiche de révision Elderwood — établie d'après le lore et le règlement du serveur.</footer>
+
+<script>
+(function(){
+  var q = document.getElementById('q');
+  var nores = document.getElementById('nores');
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section'));
+  var units = [];
+  sections.forEach(function(sec){
+    Array.prototype.slice.call(sec.querySelectorAll('.card,.house,.def,.ev,.box,.roll')).forEach(function(el){
+      if(el.closest('.card,.house,.def,.ev,.box,.roll') !== el) return;
+      units.push({el:el, sec:sec, txt:el.textContent.toLowerCase()});
+    });
+  });
+
+  function norm(s){
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  }
+  var normed = units.map(function(u){ return norm(u.txt); });
+
+  q.addEventListener('input', function(){
+    var v = norm(q.value.trim());
+    if(!v){
+      units.forEach(function(u){ u.el.classList.remove('hidden'); });
+      sections.forEach(function(s){ s.classList.remove('hidden'); });
+      nores.style.display = 'none';
+      return;
+    }
+    var live = {};
+    units.forEach(function(u,i){
+      var hit = normed[i].indexOf(v) !== -1;
+      u.el.classList.toggle('hidden', !hit);
+      if(hit) live[u.sec.id] = true;
+    });
+    var any = false;
+    sections.forEach(function(s){
+      var on = !!live[s.id];
+      s.classList.toggle('hidden', !on);
+      if(on) any = true;
+    });
+    nores.style.display = any ? 'none' : 'block';
+  });
+})();
+</script>
+</body>
+</html>
